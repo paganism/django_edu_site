@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'index' %}">Main</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'course-list' %}">Courses</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ course.title }}</li>
+    </ol>
+  </nav>
+    <h2>{{ course.title }}</h2>
+{% endblock header %}
+
+{% block content %}
+    <div class="row">
+        
+        <p>{{ course.about }}
+        </p>
+    </div>
+    <hr>
+    <div class course-detail>
+        <p> Продолжительность курса:            
+            {{ course.duration }}</p>
+        {% if user.is_authenticated%}
+            {% if course.title not in user.get_all_courses %}
+                <form method="post" action="">
+                    {% csrf_token %}       
+                    <input type="submit" class="btn btn-light" value="Поступить на курс" />
+                    <input type="hidden" name="pk" value="{{ course.id }}" />
+                </form>
+            {% else %}
+                <form method="post" action="">
+                    {% csrf_token %}       
+                    <input type="submit" class="btn btn-light" value="Отписаться" />
+                    <input type="hidden" name="pk" value="{{ course.id }}" />
+                    <input type="hidden" name="subscribe" value="del" />
+                </form>
+                <p>Дни проведения занятий:
+                    <ul class="days">
+                        {% for day in days %}
+                        <li class="nav-item active">{{day.day}}</li>
+                        {%endfor%}
+                    </ul>
+                    <br>
+                    Время проведения: 20:00
+                </p>
+            {% endif %}
+        {% else %}
+        <p>Поступить на курс могут только зарегистрированные пользователи</p>
+        {% endif %}
+    </div>
+    
+{% endblock content %}
