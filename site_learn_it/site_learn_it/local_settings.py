@@ -7,6 +7,7 @@ load_dotenv()
 env = Env()
 env.read_env()
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -18,9 +19,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1']
 
 INTERNAL_IPS = ['127.0.0.1',]
 
@@ -34,7 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'learn_it.apps.LearnItConfig',
-    
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -130,9 +131,3 @@ MEDIA_URL = '/media/'
 AUTH_USER_MODEL = 'learn_it.CustomUser'
 
 LOGIN_REDIRECT_URL = 'course-list'
-
-
-# try:
-#    from local_settings import *
-# except ImportError:
-#    pass

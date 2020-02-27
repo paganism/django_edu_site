@@ -33,7 +33,6 @@ def course_detail(request, pk):
         return render(request, 'learn_it/course_detail.html', context)
 
     if request.method == 'POST':
-        print('RRRRRRRREEEEQQQUUUESSSSTTT: ', request.POST.get('subscribe'))
         
         if request.POST.get('subscribe') == 'del':
             course_data.students.remove(request.user)
@@ -50,8 +49,7 @@ def register(request):
         if form.is_valid():
             form.save()
             return redirect('/accounts/login/')
-        else:
-            return render(request, 'registration/register.html', {'form': form})
+        return render(request, 'registration/register.html', {'form': form})
     else:
         form = RegistrationForm()
         

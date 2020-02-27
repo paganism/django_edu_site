@@ -20,7 +20,7 @@
     <hr>
     <div class course-detail>
         <p> Продолжительность курса:            
-            {{ course.duration }}</p>
+            {{ course.duration }} мес.</p>
         {% if user.is_authenticated%}
             {% if course.title not in user.get_all_courses %}
                 <form method="post" action="">
@@ -42,7 +42,7 @@
                         {%endfor%}
                     </ul>
                     <br>
-                    Время проведения: 20:00
+                    Время проведения: 20:00 Мск
                 </p>
             {% endif %}
         {% else %}
