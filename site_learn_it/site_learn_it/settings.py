@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'learn_it.apps.LearnItConfig',
-    
 ]
 
 MIDDLEWARE = [
@@ -45,7 +44,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'site_learn_it.urls'
@@ -61,6 +59,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -123,7 +122,7 @@ STATICFILES_DIRS = [
     '/var/www/static/',
 ]
 
-MEDIA_ROOT = '/home/yoj/otus/otus_6_django_edu_site/site_learn_it/static/img/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'img') 
 
 MEDIA_URL = '/media/'
 
@@ -132,7 +131,7 @@ AUTH_USER_MODEL = 'learn_it.CustomUser'
 LOGIN_REDIRECT_URL = 'course-list'
 
 
-# try:
-#    from local_settings import *
-# except ImportError:
-#    pass
+try:
+    from .local_settings import *
+except ImportError:
+    pass
