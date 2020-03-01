@@ -3,8 +3,8 @@
 {% block header %}
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{% url 'index' %}">Main</a></li>
-      <li class="breadcrumb-item"><a href="{% url 'course-list' %}">Courses</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'index' %}">Главная</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'course-list' %}">Курсы</a></li>
       <li class="breadcrumb-item active" aria-current="page">{{ course.title }}</li>
     </ol>
   </nav>
@@ -19,8 +19,7 @@
     </div>
     <hr>
     <div class course-detail>
-        <p> Продолжительность курса:            
-            {{ course.duration }} мес.</p>
+        <p> Продолжительность курса: {{ course.duration }} мес.</p>
         {% if user.is_authenticated%}
             {% if course.title not in user.get_all_courses %}
                 <form method="post" action="">
