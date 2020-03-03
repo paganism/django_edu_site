@@ -3,8 +3,8 @@
 {% block header %}
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{% url 'index' %}">Главная</a></li>
-      <li class="breadcrumb-item"><a href="{% url 'course-list' %}">Курсы</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'learn_it:index' %}">Главная</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'learn_it:course-list' %}">Курсы</a></li>
       <li class="breadcrumb-item active" aria-current="page">{{ course.title }}</li>
     </ol>
   </nav>
@@ -47,6 +47,15 @@
         {% else %}
         <p>Поступить на курс могут только зарегистрированные пользователи</p>
         {% endif %}
+    </div>
+    <div class="links">
+        {% if user.is_authenticated %}
+        <div class="link">
+            <a href="{% url 'learn_it:course-update' course.pk %}">Редактировать курс</a>
+            <a href="{% url 'learn_it:course-delete' course.pk %}">Удалить курс</a>
+        </div>
+        {% endif %}
+
     </div>
     
 {% endblock content %}

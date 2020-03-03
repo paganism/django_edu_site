@@ -3,7 +3,7 @@
 {% block header %}
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{% url 'index' %}">Главная</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'learn_it:index' %}">Главная</a></li>
       <li class="breadcrumb-item active" aria-current="page">Курсы</li>
     </ol>
   </nav>
@@ -15,10 +15,14 @@
     <div class="row">
         <div class="jumbotron col-lg-12">
             <div class="col-md-3 col-lg-3">
-                <a href="{% url 'course' course.id %}"><h1>{{ course }}</h1></a>
+                <a href="{% url 'learn_it:course' course.id %}"><h1>{{ course }}</h1></a>
             </div>
             <div class="col-md-3 col-lg-3">
-                <img src="{{ course.course_pic.url }}" width="100" alt="{{course}}"/>
+                {% if course.course_pic.url is not None%}
+                    <img src="{{ course.course_pic.url }}" width="100" alt="{{course}}"/>
+                {% else %}
+                    <img src="" width="100" alt="{{course}}"/>
+                {% endif %}
             </div>
             <div class="course-descr col-md-12 col-lg-12 ">
                 {{ course.about }}

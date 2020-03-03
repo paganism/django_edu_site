@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'learn_it:index' %}">Главная</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'learn_it:course-list' %}">Курсы</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Создать курс</li>
+    </ol>
+  </nav>
+{% endblock header %}
+
+{% block content %}
+
+    <div class course-record-form>
+        {% if user.is_authenticated %}
+           
+                <form method="post" action="">
+                    {% csrf_token %}
+                    {{ form.as_p }}     
+                    <input type="submit" class="btn btn-light" value="Сохранить" />
+                </form>
+        {% endif %}
+    </div>
+    
+{% endblock content %}

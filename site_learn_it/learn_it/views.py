@@ -1,11 +1,16 @@
 from django.shortcuts import render, redirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from .models import Course, CustomUser, Days
 from django.utils import timezone
 from .forms import RegistrationForm, LoginForm
 from django.contrib.auth import authenticate, login
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import user_passes_test
 
 
 def index(request):
@@ -63,7 +68,31 @@ def login_view(request):
             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             if user:
                 login(request, user)
-                return redirect('course-list')
+                return redirect('learn_it:course-list')
     else:
         form = LoginForm()
     return render(request, 'registration/login.html', {'form': form})
+
+
+class CourseCreateView(LoginRequiredMixin, CreateView):
+    model = Course
+    template_name = 'learn_it/course_create_form.html'
+    success_url = reverse_lazy('learn_it:course-list')
+    fields = ['title', 'duration', 'about', 'course_pic', 'day',]
+
+
+class CourseUpdateView(LoginRequiredMixin, UpdateView):
+    model = Course
+    template_name = 'learn_it/course_create_form.html'
+    success_url = reverse_lazy('learn_it:course-list')
+    fields = ['title', 'duration', 'about', 'course_pic', 'day',]
+
+
+class CourseDeleteView(DeleteView):
+    model = Course
+    success_url = reverse_lazy('learn_it:course-list')
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser,
+                     login_url=reverse_lazy('learn_it:login-user')))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
