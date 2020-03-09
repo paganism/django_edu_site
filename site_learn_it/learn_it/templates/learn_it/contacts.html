@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Контакты{% endblock %}
+{% load static %}
+{% block header %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'learn_it:index' %}">Главная</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Контакты</li>
+    </ol>
+  </nav>
+    <h2>Связаться с нами:</h2>
+{% endblock header %}
+{% block content %}
+    <article>
+    {% if contact_form %}
+
+        <p>Если у Вас есть пожелания или предложения, то вы можете отправить нам их, воспользовавшись контактной формой:</p>
+        <form id="contact_form" action="{% url 'learn_it:contacts' %}" method="post">
+            {% csrf_token %}
+            {{ contact_form.as_p }}
+
+                <button type="submit" class="btn btn-primary">Отправить</button>
+
+        </form>
+    {% else %}
+        <p>Сообщение отправлено</p>
+    {% endif %}
+    </article>
+{% endblock %}

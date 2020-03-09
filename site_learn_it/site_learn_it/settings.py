@@ -130,6 +130,17 @@ AUTH_USER_MODEL = 'learn_it.CustomUser'
 
 LOGIN_REDIRECT_URL = 'course-list'
 
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+        'PASSWORD': 'some-password',
+        'DEFAULT_TIMEOUT': 360,
+    }
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 try:
     from .local_settings import *

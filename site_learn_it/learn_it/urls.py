@@ -12,4 +12,5 @@ urlpatterns = [
     path('courses/delete/<pk>', views.CourseDeleteView.as_view(), name='course-delete'),
     path('register/', views.register, name='register'),
     path('accounts/login/', views.login_view, name='login-user'),
+    path('contacts', views.ContactsView.as_view(), name='contacts'),
 ]

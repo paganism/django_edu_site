@@ -2,15 +2,17 @@ from django.shortcuts import render, redirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-
+from django.views import View
 from .models import Course, CustomUser, Days
 from django.utils import timezone
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, ContactForm
 from django.contrib.auth import authenticate, login
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import user_passes_test
+from django.template.context_processors import csrf
+from .tasks import SendMailFromForm
 
 
 def index(request):
@@ -96,3 +98,29 @@ class CourseDeleteView(DeleteView):
                      login_url=reverse_lazy('learn_it:login-user')))
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+
+
+class ContactsView(View):
+    template_name = 'learn_it/contacts.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        context.update(csrf(request))
+        context['contact_form'] = ContactForm()
+
+        return render(request, template_name=self.template_name, context=context)
+
+    def post(self, request, *args, **kwargs):
+        context = {}
+        form = ContactForm(request.POST)
+
+
+        if form.is_valid():
+
+            email_body = f"{form.cleaned_data['message']}"
+            email_to_answer = f"{form.cleaned_data['email']}"
+
+            # call celery task
+            SendMailFromForm.delay(email_to_answer, email_body)
+
+        return render(request, template_name=self.template_name, context=context)
