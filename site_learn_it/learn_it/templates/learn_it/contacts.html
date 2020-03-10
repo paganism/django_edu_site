@@ -18,7 +18,9 @@
         <form id="contact_form" action="{% url 'learn_it:contacts' %}" method="post">
             {% csrf_token %}
             {{ contact_form.as_p }}
-
+            <p>{{ form.name.errors.as_text }}</p>
+            <p>{{ form.email.errors.as_text }}</p>
+            <p>{{ form.message.errors.as_text }}</p>
                 <button type="submit" class="btn btn-primary">Отправить</button>
 
         </form>

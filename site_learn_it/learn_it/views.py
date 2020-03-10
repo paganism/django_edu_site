@@ -12,7 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import user_passes_test
 from django.template.context_processors import csrf
-from .tasks import SendMailFromForm
+from .tasks import send_mail_from_form
 
 
 def index(request):
@@ -121,6 +121,6 @@ class ContactsView(View):
             email_to_answer = f"{form.cleaned_data['email']}"
 
             # call celery task
-            SendMailFromForm.delay(email_to_answer, email_body)
+            send_mail_from_form.delay(email_to_answer, email_body)
 
         return render(request, template_name=self.template_name, context=context)

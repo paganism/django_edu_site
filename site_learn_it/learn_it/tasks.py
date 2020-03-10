@@ -3,7 +3,7 @@ from site_learn_it.celery import app
 
 
 @app.task
-def SendMailFromForm(email_to_answer, email_body):
+def send_mail_from_form(email_to_answer, email_body):
     """
     Send Email from send form
     """
