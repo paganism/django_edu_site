@@ -6,7 +6,7 @@ site_learn_it/learn_it/migrations/__pycache__
 site_learn_it/learn_it/__pycache__
 site_learn_it/tests.py
 site_learn_it/migrations/__pycache__
-site_learn_it/learn_it/local_settings.py
+site_learn_it/site_learn_it/local_settings.py
 blog.db
 blog_engine.db
 venv
