@@ -136,7 +136,7 @@ class TestCaseForCoursesTransactional(APITransactionTestCase):
         self.assertEqual(Course.objects.get(title='TestCourseTrans1').title, 'TestCourseTrans1')
 
     def test_count_zero_courses(self):
-        # after previous transaction count shoud be 0
+        # after previous transaction count should be 0
         self.assertEqual(Course.objects.count(), 0)
 
     @classmethod
