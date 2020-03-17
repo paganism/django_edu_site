@@ -7,6 +7,10 @@ from django.conf.urls.static import static
 from rest_framework import routers
 from apiapp import views
 
+from graphene_django.views import GraphQLView
+from .schema import schema
+
+
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
@@ -21,6 +25,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api-oauth/', include('apiapp.urls')),
+    path('graphql/', GraphQLView.as_view(graphiql=True, schema=schema)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
