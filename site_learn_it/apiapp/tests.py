@@ -19,10 +19,10 @@ class TestCaseForCourseSimple(APISimpleTestCase):
         self.assertEqual(course.title, 'TestCourse')
 
 
-class TestCaseForCity(APITestCase):
+class TestCaseForCourse(APITestCase):
 
     def setUp(self):
-        self.user = UserFactory(username='gusya', password='solvo2solvo')
+        self.user = UserFactory(username='vasya', password='vasya')
 
     def test_get_courses_request_factory(self):
         course = CourseFactory(title='TestCourse', duration=5, about='test descr')
@@ -35,6 +35,7 @@ class TestCaseForCity(APITestCase):
 
         response = course_view(request)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Course.objects.count(), 1)
 
     def test_post_course_request_factory(self):
         request_factory = APIRequestFactory()
@@ -57,6 +58,7 @@ class TestCaseForCity(APITestCase):
 
         response = course_view(request)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(Course.objects.get(title='TestCourse').title, 'TestCourse')
 
 
 class TestCaseForUsersTest(APITestCase):
@@ -113,3 +115,30 @@ class TestCaseForUsersTest(APITestCase):
         # initial user + created user = 2
         self.assertEqual(CustomUser.objects.count(), 2)
         self.assertEqual(CustomUser.objects.get(username='testcreateuser').username, 'testcreateuser')
+
+
+class TestCaseForCoursesTransactional(APITransactionTestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.course = CourseFactory(title='TestCourseTrans', duration=6, about='test descr')
+        cls.user = UserFactory(username='kolya', password='kolya')
+
+    def test_count_courses_transactional(self):
+        self.client.force_authenticate(user=self.user)
+        url = reverse('apicourses')
+        data = {'title': 'TestCourseTrans1', 'duration': 7, 'about': 'test descr1'}
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # initial user + created user = 2
+        self.assertEqual(Course.objects.count(), 2)
+        self.assertEqual(Course.objects.get(title='TestCourseTrans1').title, 'TestCourseTrans1')
+
+    def test_count_zero_courses(self):
+        # after previous transaction count shoud be 0
+        self.assertEqual(Course.objects.count(), 0)
+
+    @classmethod
+    def tearDownClass(cls):
+        pass
