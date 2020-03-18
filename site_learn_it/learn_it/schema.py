@@ -45,15 +45,15 @@ class CustomUserMutation(graphene.Mutation):
         user_id = graphene.Int(required=True)
         new_username = graphene.String(required=True)
 
-    result = graphene.Boolean()
     user = graphene.Field(CustomUserType)
 
     def mutate(self, info, user_id, new_username):
 
-        return {
-            'result': True,
-            'user': CustomUser.objects.first()
-        }
+        user = CustomUser.objects.get(pk=user_id)
+        user.username = new_username
+        user.save()
+
+        return CustomUserMutation(user=user)
 
 
 class CourseMutation(graphene.Mutation):
@@ -62,15 +62,15 @@ class CourseMutation(graphene.Mutation):
         course_id = graphene.Int(required=True)
         new_title = graphene.String(required=True)
 
-    result = graphene.Boolean()
     course = graphene.Field(CourseType)
 
     def mutate(self, info, course_id, new_title):
 
-        return {
-            'result': True,
-            'course': Course.objects.first()
-        }
+        course = Course.objects.get(pk=course_id)
+        course.title = new_title
+        course.save()
+
+        return CourseMutation(course=course)
 
 
 class Mutation:
