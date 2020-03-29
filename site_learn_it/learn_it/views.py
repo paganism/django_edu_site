@@ -14,6 +14,11 @@ from django.contrib.auth.decorators import user_passes_test
 from django.template.context_processors import csrf
 from .tasks import send_mail_from_form
 
+from datetime import timedelta
+from django.utils import timezone
+
+from django.db.models import Q, F, Max, Min, Exists, OuterRef, Sum, Count, Subquery
+
 
 def index(request):
     return render(request, 'learn_it/index.html')
@@ -122,5 +127,32 @@ class ContactsView(View):
 
             # call celery task
             send_mail_from_form.delay(email_to_answer, email_body)
+
+        return render(request, template_name=self.template_name, context=context)
+
+
+class StatisticsView(View):
+    template_name = 'learn_it/statistics.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+
+        one_month_ago = timezone.now() - timedelta(days=30)
+
+        popular_courses_in_month = Course.objects.filter(
+            Exists(CustomUser.objects.filter(courses=OuterRef('pk'), date_joined__gte=one_month_ago)))
+        context['popular_courses_in_month'] = popular_courses_in_month
+
+        popular_courses = Course.objects.values('title').annotate(count=Count('students')).order_by('-count')[:10]
+
+        context['popular_courses'] = popular_courses
+        context['most_popular'] = popular_courses.first()
+
+        longest_duration = Course.objects.all().aggregate(Max('duration'))
+        longest_course = Course.objects.get(duration=longest_duration['duration__max'])
+        context['longest_course'] = longest_course
+
+        busiest_days = Course.objects.values('day').annotate(count=Count('day')).order_by('-count')
+        context['busiest_days'] = busiest_days
 
         return render(request, template_name=self.template_name, context=context)

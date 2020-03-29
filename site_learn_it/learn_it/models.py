@@ -54,7 +54,7 @@ class Course(models.Model):
     students = models.ManyToManyField(CustomUser, related_name='courses', blank=True)
     date_start = models.DateField(auto_now_add=True, editable=True)
     
-    day = models.ManyToManyField(Days, related_name='courses')
+    day = models.ManyToManyField(Days, related_name='days')
 
     def __str__(self):
         return f"{self.title}"

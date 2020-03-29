@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Статистика{% endblock %}
+{% load static %}
+{% block header %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'learn_it:index' %}">Главная</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Статистика</li>
+    </ol>
+</nav>
+<h2>Статистика по сайту:</h2>
+{% endblock header %}
+{% block content %}
+
+<p> Пользователи, зарегистрированные в этом месяце подписались на следующие курсы:</p>
+<ul>
+    {% for course in popular_courses_in_month %}
+    <li>{{ course }}</li>
+    {% endfor %}
+</ul>
+
+<p>Самые популярные курсы на сайте:</p>
+<ul>
+    {% for course in popular_courses %}
+    <li>{{ course.title }} : {{ course.count }} человек</li>
+    {% endfor %}
+</ul>
+
+<p>Лидер среди них: {{ most_popular.title }}</p>
+<p>Самый длинный курс: {{ longest_course.title }} длительностью {{ longest_course.duration }} месяцев</p>
+<p>Самые нагруженные дни: </p>
+<ul>
+    {% for day in busiest_days %}
+    <li>{{ day.day }} </li>
+    {% endfor %}
+</ul>
+{% endblock %}
