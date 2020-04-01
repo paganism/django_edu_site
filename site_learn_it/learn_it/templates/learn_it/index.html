@@ -7,12 +7,12 @@
 {% endblock header %}
 
 {% block content %}
+    {% if not user.is_authenticated %}
     <h2>
-        <h2>
-            <a href="{% url 'learn_it:register' %}">Register an account</a>
-            to pass the course to improove your knowledge.
-        </h2>
+        <a href="{% url 'learn_it:register' %}">Register an account</a>
+        to pass the course to improove your knowledge.
     </h2>
+    {% endif %}
     <h2>
         Whenever you learn something new about a course, don't give up.
     </h2>

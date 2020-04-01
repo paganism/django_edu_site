@@ -31,14 +31,16 @@ class CourseListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         context['now'] = timezone.now()
         return context
+
 
 
 def course_detail(request, pk):
     """детали курса"""
     course_data = Course.objects.get(id=pk)
-    days = Days.objects.filter(courses__id=pk)
+    days = Days.objects.filter(days__id=pk)
     context = {'course': course_data, 'days': days}
 
     if request.method == 'GET':
@@ -50,7 +52,6 @@ def course_detail(request, pk):
             course_data.students.remove(request.user)
         else:
             course_data.students.add(request.user)
-            course_data.save()
 
         return render(request, 'learn_it/course_detail.html', context)
 
