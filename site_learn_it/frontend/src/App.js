@@ -5,6 +5,9 @@ import { Route, Link } from 'react-router-dom'
 
 import  Main from './Main'
 import './App.css';
+import CoursesList from './Courses'
+import Course from './Course'
+
 
 const BaseLayout = () => (
   <div className="container-fluid">
@@ -23,6 +26,8 @@ const BaseLayout = () => (
 
     <div className="content">
       <Route path="/" exact component={Main} />
+      <Route path="/courses" exact component={CoursesList} />
+      <Route path="/course/:pk" exact component={Course} />
     </div>
 
   </div>
