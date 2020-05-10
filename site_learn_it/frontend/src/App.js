@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Switch } from 'react-router-dom'
 import { Route, Link } from 'react-router-dom'
 
 
@@ -28,11 +28,13 @@ const BaseLayout = () => (
     </nav>
 
     <div className="content">
-      <Route path="/" exact component={Main} />
-      <Route path="/courses" exact component={CoursesList} />
-      <Route path="/course/:pk" exact component={Course} />
-      <Route path="/courses/edit/:pk" exact component={EditFormContainer} />
-      <Route path="/courses/create" exact component={FormContainer} />
+      <Switch>
+        <Route path="/" exact component={Main} />
+        <Route path="/courses" exact component={CoursesList} />
+        <Route path="/course/:pk" exact component={Course} />
+        <Route path="/courses/edit/:pk" exact component={EditFormContainer} />
+        <Route path="/courses/create" exact component={FormContainer} />
+      </Switch>
     </div>
   </div>
 )
