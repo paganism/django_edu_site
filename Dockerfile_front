@@ -1,0 +1,7 @@
+FROM node:alpine
+LABEL maintainer="paganism@mail.ru"
+WORKDIR /usr/app/site_learn_it/frontend/
+EXPOSE 3000
+COPY ./site_learn_it/frontend ./
+RUN npm install
+CMD ["npm", "start"]
