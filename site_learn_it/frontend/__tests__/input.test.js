@@ -37,7 +37,6 @@ describe("Input Component Tests", () => {
             }
         wrapper.find('input').simulate('change', event);
         expect(mockOnChange).toHaveBeenCalledTimes(1);
-        // expect(mockOnChange.mock.calls[0][0].target.value).toHaveBeenCalledWith('This is just for test');
     })
 
     it("Expects to find input HTML element with className test in the DOM", () => {
